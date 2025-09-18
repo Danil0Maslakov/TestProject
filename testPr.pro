@@ -14,7 +14,8 @@ SOURCES += \
 
 HEADERS += \
     fileprocessor.h \
-    mainwindow.h
+    mainwindow.h \
+    ui_mainwindow.h
 
 FORMS += \
     mainwindow.ui

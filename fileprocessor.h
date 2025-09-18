@@ -1,6 +1,3 @@
-#ifndef FILEPROCESSOR_H
-#define FILEPROCESSOR_H
-
 #include <QObject>
 #include <QRunnable>
 #include <QFile>
