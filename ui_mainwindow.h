@@ -13,6 +13,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QMainWindow>
 
 namespace Ui {
 class MainWindow {
@@ -32,10 +33,13 @@ public:
     QTextEdit *textEditLog;
     QTableWidget *tableWidget;
 
-    void setupUi(QWidget *MainWindow) {
+    void setupUi(QMainWindow *MainWindow) {
         MainWindow->setWindowTitle("XOR File Processor");
         MainWindow->resize(800,600);
+
+        // Центральный виджет
         centralWidget = new QWidget(MainWindow);
+        MainWindow->setCentralWidget(centralWidget);
 
         QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
 
@@ -72,6 +76,7 @@ public:
         QHBoxLayout *collisionLayout = new QHBoxLayout();
         collisionLayout->addWidget(new QLabel("On collision:"));
         comboBoxOnCollision = new QComboBox(centralWidget);
+        comboBoxOnCollision->addItems({"Overwrite", "Add counter"});
         collisionLayout->addWidget(comboBoxOnCollision);
         mainLayout->addLayout(collisionLayout);
 
@@ -95,7 +100,7 @@ public:
         mainLayout->addWidget(new QLabel("Log:"));
         textEditLog = new QTextEdit(centralWidget);
         textEditLog->setReadOnly(true);
-        mainLayout->addWidget(textEditLog, 1); // растягивается
+        mainLayout->addWidget(textEditLog, 1); // тянется по вертикали
 
         // Progress table
         mainLayout->addWidget(new QLabel("Progress:"));
@@ -103,9 +108,6 @@ public:
         tableWidget->setColumnCount(4);
         tableWidget->setHorizontalHeaderLabels({"File","Progress","Status","Message"});
         mainLayout->addWidget(tableWidget, 2);
-
-        centralWidget->setLayout(mainLayout);
-        MainWindow->setLayout(mainLayout);
     }
 };
 }

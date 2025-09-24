@@ -88,13 +88,16 @@ void MainWindow::pollTimerTimeout()
     if (!m_running) return;
     QString mask = ui->lineEditInputMask->text();
     if (mask.isEmpty()) return;
-
+    qDebug()<<mask;
     // simple mask handling: if contains wildcard, use QDir::entryList
     QFileInfo fi(mask);
+
     QString path = fi.path();
+    qDebug()<<path;
     QString pattern = fi.fileName();
     if (path.isEmpty()) path = QDir::currentPath();
     QDir dir(path);
+    qDebug()<<dir;
     QStringList found;
     if (pattern.contains('*') || pattern.contains('?')) {
         found = dir.entryList(QStringList(pattern), QDir::Files);
@@ -102,6 +105,12 @@ void MainWindow::pollTimerTimeout()
     } else {
         // treat as full filename
         QFileInfo single(mask);
+        qDebug()<<"single info: "<<single.absoluteFilePath();
+        qDebug()<<"single exists: "<<single.exists();
+        QString path = single.absoluteFilePath();
+        qDebug() << path << path.size();
+        qDebug() << "Current path:" << QDir::currentPath();
+
         if (single.exists()) processFile(single.absoluteFilePath());
     }
 }
@@ -109,6 +118,8 @@ void MainWindow::pollTimerTimeout()
 void MainWindow::startProcessingOnce()
 {
     QString mask = ui->lineEditInputMask->text();
+    qDebug() << "Mask string:" << mask;
+
     if (mask.isEmpty()) {
         QMessageBox::warning(this, "Error", "Input mask or file is empty");
         return;
@@ -120,6 +131,7 @@ void MainWindow::startProcessingOnce()
 
 void MainWindow::processFile(const QString &path)
 {
+    qDebug()<<"ProcessFile";
     // create worker
     auto xorVal = parseXorValue(ui->lineEditXorValue->text());
     if (xorVal.size() != 8) {
@@ -154,6 +166,7 @@ void MainWindow::on_processProgress(qint64 processed, qint64 total, const QStrin
 
 void MainWindow::on_processFinished(const QString &fileName, bool ok, const QString &message)
 {
+    qDebug()<<"PrFinished";
     ui->textEditLog->append(QString("Finished %1 : %2 (%3)").arg(fileName).arg(ok?"OK":"FAIL").arg(message));
 }
 
